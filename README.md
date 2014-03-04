@@ -1,4 +1,4 @@
-js-vector-editor-svg-import
+JS Vector Editor with SVG File Import
 ===========================
 
 [JS Vector Editor with SVG File Import](http://www.youtube.com/watch?v=QPK5ozpOXzM)
