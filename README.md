@@ -11,6 +11,11 @@ Changes
 - Refactored code (No Jasmine tests at this release)
 
 
+TODO
+====
+- Need to make SVG Gradients work
+- Add test cases
+
 Based On
 ========
 http://code.google.com/p/jsvectoreditor/
