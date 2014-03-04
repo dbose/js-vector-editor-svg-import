@@ -1,0 +1,199 @@
+
+<!-- saved from url=(0057)http://jsvectoreditor.googlecode.com/svn/trunk/index.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>VectorEditor</title>
+  <!-- SOMEBODY FIX THIS HTML -->
+<meta name="viewport" content="width = device-width">
+</head>
+<body>
+  <div id="canvas" style="position: absolute;top:0;left:0; width: 100%; height: 100%; top: 0px; left: 0px;-webkit-user-select: none;"></div>
+  
+  <style>
+    button {
+      width: 28px;
+      height: 28px;
+      margin-bottom: 5px;
+      padding: 1px;
+    }
+  </style>
+    
+    <!-- did i mention i suck at html? -->
+    <div id="dialog" style="position: absolute; background-color: gray; width: 90%; height: 90%; top: 20px; left: 20px; z-index: 99; display: none;">
+      <input type="button" value="Import Shapes" onclick="import_shapes()">
+      <!--
+      <input type="button" value="Close" onclick="document.getElementById('dialog').style.display='none'">
+      -->
+      <input type="button" value="Close" onclick="jQuery('#dialog').slideUp()">
+      <br><br>
+      <center>
+      <textarea id="data" style="width: 90%; height: 80%"></textarea>
+      </center>
+    </div>
+    
+    
+    
+  <div style="position: absolute; top: 10px; left: 10px; width: 64px">
+  
+    <button id="select" onclick="editor.setMode('select')" disabled=""><img src="./VectorEditor_files/select.gif" title="Select"></button>
+    <button id="selectp" onclick="editor.setMode('selectp')"><img src="./VectorEditor_files/selectadd.gif" title="Select Add"></button>
+    <button id="rect" onclick="editor.setMode('rect')"><img src="./VectorEditor_files/rectangle.gif" title="Rectangle"></button>
+    <button id="line" onclick="editor.setMode('line')"><img src="./VectorEditor_files/line.gif" title="Line"></button>
+    <button id="ellipse" onclick="editor.setMode('ellipse')"><img src="./VectorEditor_files/circle.gif" title="Ellipse"></button>
+    <button id="path" onclick="editor.setMode('path')"><img src="./VectorEditor_files/path.gif" title="Path/Freeform"></button>
+    <button id="polygon" onclick="editor.setMode('polygon')"><img src="./VectorEditor_files/polygon.gif" title="Polygon"></button>
+    <button id="image" onclick="editor.setMode('image')"><img src="./VectorEditor_files/image.gif" title="Image"></button>
+    <button id="text" onclick="editor.setMode('text')"><img src="./VectorEditor_files/text.gif" title="Text"></button>
+    <button id="delete" onclick="editor.setMode('delete')"><img src="./VectorEditor_files/delete.gif" title="Delete"></button>
+    <button onclick="alert(editor.getMarkup())"><img src="./VectorEditor_files/script_code.png" title="Markup"></button>
+    <button onclick="if(confirm(&#39;Are you sure you want to clear the canvas?&#39;))editor.deleteAll();"><img src="./VectorEditor_files/arrow_rotate_clockwise.png" title="Reset"></button>
+    
+    <button id="save" onclick="save()"><img src="./VectorEditor_files/disk.png" title="Delete"></button>
+    <!-- <button id="open" onclick="import_file();"><img src="./VectorEditor_files/folder_go.png" title="Open"></button> -->
+    <input type="file" id="file_import">
+    
+    <br>
+    
+
+    
+
+
+    <span>Fill:</span> 
+    <select id="fillcolor" onchange="editor.set('fill',this)" style="background-color:red"> 
+      <option style="background-color:red;" value="red"></option> 
+      <option style="background-color:black;" value="black"></option> 
+      <option style="background-color:navy;" value="navy"></option> 
+      <option style="background-color:fuchsia;" value="fuchsia"></option> 
+      <option style="background-color:red;" value="lime"></option> 
+      <option style="background-color:purple;" value="purple"></option> 
+      <option style="background-color:gray;" value="gray"></option> 
+      <option style="background-color:lime;" value="lime"></option> 
+      <option style="background-color:maroon;" value="maroon"></option> 
+      <option style="background-color:wheat;" value="wheat"></option> 
+      <option style="background-color:blue;" value="blue"></option> 
+      <option style="background-color:green;" value="green"></option> 
+      <option style="background-color:yellow;" value="yellow"></option> 
+      <option style="background-color:aqua;" value="aqua"></option> 
+      <option style="background-color:white;" value="white">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+      <option style="background-color:white;" value="none">None</option> 
+    </select> 
+    <select id="fillopacity" onchange="setFillOpacity(this);"> 
+      <option value="1">100%</option> 
+      <option value=".90">90%</option> 
+      <option value=".80">80%</option> 
+      <option value=".70">70%</option> 
+      <option value=".60">60%</option> 
+      <option value=".50">50%</option> 
+      <option value=".40">40%</option> 
+      <option value=".30">30%</option> 
+      <option value=".20">20%</option>
+      <option value=".10">10%</option>  
+    </select> 
+    <span>Stroke:</span> 
+    <select id="strokecolor" onchange="setStrokeColor(this);" style="background-color:black"> 
+      <option style="background-color:red;" value="red"></option> 
+      <option style="background-color:black;" value="black"></option> 
+      <option style="background-color:navy;" value="navy"></option> 
+      <option style="background-color:fuchsia;" value="fuchsia"></option> 
+      <option style="background-color:red;" value="lime"></option> 
+      <option style="background-color:purple;" value="purple"></option> 
+      <option style="background-color:gray;" value="gray"></option> 
+      <option style="background-color:lime;" value="lime"></option> 
+      <option style="background-color:maroon;" value="maroon"></option> 
+      <option style="background-color:wheat;" value="wheat"></option> 
+      <option style="background-color:blue;" value="blue"></option> 
+      <option style="background-color:green;" value="green"></option> 
+      <option style="background-color:yellow;" value="yellow"></option> 
+      <option style="background-color:aqua;" value="aqua"></option> 
+      <option style="background-color:white;" value="white">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+      <option style="background-color:white;" value="none">None</option>  
+    </select> 
+    <select id="strokewidth" onchange="setStrokeWidth(this);"> 
+      <option value="1px">1px</option> 
+      <option value="2px">2px</option> 
+      <option value="3px">3px</option> 
+      <option value="4px">4px</option> 
+      <option value="5px">5px</option> 
+      <option value="6px">6px</option>
+      <option value="7px">7px</option> 
+      <option value="8px">8px</option> 
+      <option value="9px">9px</option> 
+      <option value="10px">10px</option>
+    </select> 
+    
+    <select id="strokeopacity" onchange="setStrokeOpacity(this);"> 
+      <option value="1">100%</option> 
+      <option value=".90">90%</option> 
+      <option value=".80">80%</option> 
+      <option value=".70">70%</option> 
+      <option value=".60">60%</option> 
+      <option value=".50">50%</option> 
+      <option value=".40">40%</option> 
+      <option value=".30">30%</option> 
+      <option value=".20">20%</option>
+      <option value=".10">10%</option>  
+    </select> 
+  </div>
+  <script type="text/javascript" src="./VectorEditor_files/jquery-1.3.2.js"></script>  
+  <script type="text/javascript" src="./editor/raphael.js"></script>
+  <script type="text/javascript" src="./editor/comic-sans.js"></script>
+  <script type="text/javascript" src="./editor/app.js"></script>
+  <script type="text/javascript" src="./editor/shape-container-base.js"></script>
+  <script type="text/javascript" src="./editor/editor-undo.js"></script>
+  <script type="text/javascript" src="./editor/editor.js"></script>
+  
+  <script type="text/javascript">
+    function save(){
+      $("#data").val(editor.serialize());
+      $("#dialog").slideDown();    
+    }
+      
+    function opendialog(){
+      $("#data").val("")
+      $("#dialog").slideDown()
+    }
+    
+    function import_file() {
+      try{        
+        //editor.addBuiltInShape('svg', 100,100);
+        
+        var fileInput = $('#file_import')[0];
+        
+        fileInput.addEventListener('change', function(e) {
+          var file = fileInput.files[0];
+          //var imageType = /image.*/;
+
+          var reader = new FileReader();
+            reader.onload = function(e) {
+              editor.prop.raw = reader.result;
+              editor.addBuiltInShape('svg-raw', 100, 100);              
+            }
+            reader.readAsText(file); 
+        });
+
+      }catch(err){
+        alert(err.message)
+      }    
+    }
+
+    function import_shapes(){
+      try{
+        var json = eval("("+$("#data").val()+")");
+        
+        editor.load(editor.draw, json);
+
+        $("#dialog").slideUp();
+      }catch(err){
+        alert(err.message)
+      }    
+    }
+
+    $(document).ready(function(){
+        editor = new App.Editor(document.getElementById("canvas"), "100%", "100%");        
+        editor.init();
+        editor.setMode("select");
+        import_file();
+    })  
+  </script>
+
+<!-- SOMEBODY FIX THIS HTML -->
+<i title="Raphaël Colour Picker" style="display: none; color: red;"></i></body></html>
