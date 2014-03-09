@@ -25,6 +25,7 @@
 })(jQuery);
 
 App = {};
+String.prototype.trim=function(){return this.replace(/^\s+|\s+$/g, '');};
 App.Utils = {
 
     // Async javascript load

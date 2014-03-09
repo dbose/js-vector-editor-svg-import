@@ -37,7 +37,7 @@ App.Editor = function(elem, width, height) {
         "width": 100,
         "stroke-width": 2,
         "stroke": "#000000",
-        "fill": "#ffffff",
+        "fill": "#000",
         "stroke-opacity": 1,
         "fill-opacity": 1,
         "text": "Text",
